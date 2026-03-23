@@ -19,7 +19,7 @@ Adeleye Adekunle Oluwaseun	dequnle7@gmail.com	GitHub	Active Member
 Udoh Edidiong Monday	beeeddy22@gmail.com	GitHub	Active Member
 Ukonu Fortune Chiemela	ukonufortune@gmail.com	GitHub	Active Member
 Ogunniyi Ibrahim Adedeji	ogunniyiibrahim2029@gmail.com	GitHub	Active Member
-Emmanuella Chioma Ogoke	chiomaogoke2025@gmail.com	GitHub	Active Member
+EMMANUELLA CHIOMA OGOKE chiomaogoke2025@gmail.com	GitHub	Active Member
 Titus Oluwafemi Ojo	femititus@gmail.com	GitHub	Active Member
 Kushimo Samuel Oluwashola	kushimooluwashola7652@gmail.com	GitHub	Active Member
 Table of Contents
