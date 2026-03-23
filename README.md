@@ -423,5 +423,68 @@ The **Random Forest** outperformed Logistic Regression across every fraud-specif
 
 | Feature | Importance | Interpretation |
 |---|---|---|
-| `transaction_amount` | 42.54% | Dominant splitter — most important by Gini across 100 trees |
-| `avg_amount_last_30days
+| `transaction_amount` | 42.54%
+	Dominant splitter — most important by Gini across 100 trees
+avg_amount_last_30days	26.39%	Rolling average confirms sustained high-amount fraud behavior
+total_sent_last_1hr	17.55%	Velocity signal captures burst fraud activity
+transaction_type_encoded	9.95%	Channel type creates clear TRANSFER/CASH_OUT splits
+receiver_balance_after	3.23%	Balance flooding signal — moderate contribution
+week_group_encoded	0.34%	Temporal grouping — marginal Gini reduction
+The *Grid Search CV* evaluated 162 parameter combinations across 486 model fits using ROC-AUC as the scoring metric, identifying the optimal configuration as max_depth=10, min_samples_leaf=25, min_samples_split=50, n_estimators=100 and max_features='sqrt'. This achieved a best cross-validation ROC-AUC of 0.9993, improving fraud precision to 0.60, recall to 0.98 and F1 to 0.75 — confirming that the baseline Random Forest parameters were near-optimal while delivering meaningful operational improvements that make the Grid Search optimised Random Forest the recommended production model.
+
+Grid Search CV — Best Parameters and Results
+Best Parameters: max_depth : 10 max_features : 'sqrt' min_samples_leaf : 25 min_samples_split : 50 n_estimators : 100 Best CV ROC-AUC : 0.9993 (99.93%)
+
+> *Best Model: Grid Search Optimised Random Forest*
+— Catches 98 in every 100 fraudulent transactions
+— Only 303 missed fraud cases out of 12,133 total
+
+Results Summary
+╔══════════════════════════════════════════════════════════╗
+║ FRAUD DETECTION — FINAL RESULTS ║
+╠══════════════════════════════════════════════════════════╣
+║ Dataset : PaySim (5,420,481 transactions) ║
+║ Fraud Rate : 1.12% ║
+║ Features Used : 6 ║
+║ Best Model : Random Forest (Grid Search Tuned) ║
+║ ║
+║ Test Recall : 97.50% → 98.00% (after GS) ║
+║ Test Precision : 56.40% → 60.00% (after GS) ║
+║ Test F1 Score : 71.46% → 75.00% (after GS) ║
+║ ROC-AUC : 0.9993 ║
+║ ║
+║ Fraud Cases Caught : 11,830 / 12,133 (97.5%) ║
+║ Fraud Cases Missed : 303 / 12,133 (2.5%) ║
+╚══════════════════════════════════════════════════════════╝
+
+Conclusion and Recommendations
+Recommendations
+Based on the findings of the analysis, the organisation should strengthen its fraud prevention framework by focusing on the most significant risk indicators identified in the dataset.
+- *Real-time velocity monitoring* should be implemented so that transactions associated with unusually high values of `total_sent_last_1hr` — particularly those above the 75th percentile threshold of 304,943 — trigger immediate secondary authentication. This is necessary because rapid spending within a short period emerged as the strongest short-term fraud signal.
+- *TRANSFER and CASH_OUT transactions* should be subjected to stricter verification procedures. Given their fraud rates of 8.3% and 2.7% respectively, these transaction types present greater exposure to fraudulent activity, especially where the transaction amount is close to the sender's available balance. Measures such as one-time passwords or biometric confirmation would help reduce this risk.
+- *End-of-month fraud response measures* should be adopted. Since Week 4 recorded the highest fraud concentration at 29.78% compared with 22–24% in earlier weeks, fraud monitoring systems should be more sensitive and investigation teams better prepared during the final seven days of each month.
+- *Repeat receiver accounts linked to fraud* should be continuously monitored. The 4,937 mule accounts identified in Stage 3 should be flagged in real time, and any transaction involving them should automatically prompt a fraud review.
+- *Future model iterations* should include additional variables such as sender account age, device fingerprint consistency, and geographic velocity. These features would improve the model's ability to detect more complex fraud patterns not fully captured by the current six-feature model.
+
+Conclusion
+The Capstone Project carried out by the members of Group 12 demonstrates a comprehensive fraud detection workflow that includes data preparation, exploratory analysis, visualization, and machine learning model optimization. The analysis revealed key behavioral patterns within transaction data and highlighted the challenge of detecting fraud within highly imbalanced datasets.
+Exploratory analysis revealed that fraudulent activities occur primarily in TRANSFER and CASH_OUT transactions, and that fraud cases are extremely rare compared to normal transactions. Visualization techniques further helped identify patterns and anomalies within the data. Through hyperparameter tuning, the Random Forest model achieved improved performance, demonstrating its effectiveness in identifying potentially fraudulent transactions within the dataset. These findings highlight the value of combining data analysis, visualization and machine learning to strengthen fraud detection systems in financial institutions. Such systems are essential for improving security in digital financial services and reducing the risk of financial fraud. Overall, the results show that machine learning models play an important role in improving fraud detection systems and helping financial institutions identify suspicious transactions more effectively.
+
+Acknowledgements
+- *Hart Ofigwe* — Data Science Tutor
+- *The TS Academy Scholarship Board*
+- *The Group 12 Team* — for their collaboration and team spirit
+- *Kaggle* — for the Fraud Detection-PaySim Dataset
+- *Scikit-learn team* — for developing machine learning libraries
+- *GitHub* — for the deployment platform of our Fraud Detection Project
+
+References
+Data Source
+- Lopez-Rojas, E. A., Elmir, A., & Axelson, S. (2016). PaySim: A financial mobile money simulator for fraud detection. In _28th European Modeling and Simulation Symposium (EMSS)_.
+- chendoytshman. (2023). _Fraud Detection - PaySim (with aggregated)_ [Data set]. Kaggle. https://www.kaggle.com/datasets/chendoytshman/fraud-detection-paysim
+Software and Libraries
+- Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., et al. (2011). Scikit-learn: machine learning in Python. _Journal of Machine Learning Research, 12_, 2825–2830.
+
+*License:* Apache License 2.0
+*Copyright:* © 2026 TS Academy Capstone Project — Group 12
+<div align="center"> _Built with precision. Validated with evidence._ </div>
